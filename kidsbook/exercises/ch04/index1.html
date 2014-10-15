@@ -1,0 +1,90 @@
+<!--
+ ! Excerpted from "3D Game Programming for Kids",
+ ! published by The Pragmatic Bookshelf.
+ ! Copyrights apply to this code. It may not be used to create training material,
+ ! courses, books, articles, and the like. Contact us if you are in doubt.
+ ! We make no guarantees that this code is fit for any purpose.
+ ! Visit http://www.pragmaticprogrammer.com/titles/csjava for more book information.
+-->
+<body>
+</body>
+<script src="../../../resources/scripts/extlibs/three.min.js"></script>
+<script>
+  // This is where stuff in our game will happen:
+  var scene = new THREE.Scene();
+  var shape, material;
+  var head, body, hand, right_hand, left_hand, right_foot, left_foot;
+  var dress;
+
+  // This is what sees the stuff:
+  var aspect_ratio = window.innerWidth / window.innerHeight;
+  var camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 10000);
+  camera.position.z = 500;
+  scene.add(camera);
+
+  // This will draw what the camera sees onto the screen:
+  var renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  material = new THREE.MeshNormalMaterial();
+  dress = new THREE.MeshNormalMaterial();
+
+  shape = new THREE.CylinderGeometry(1, 100, 100);
+  body = new THREE.Mesh(shape, dress);
+  scene.add(body);
+
+  shape = new THREE.SphereGeometry(60);
+  head = new THREE.Mesh(shape, material);
+  head.position.set(0, 100, 3);
+  body.add(head);
+
+  hand = new THREE.SphereGeometry(35);
+  right_hand = new THREE.Mesh(hand, material);
+  right_hand.position.set(-60, 10, 0);
+  body.add(right_hand);
+
+  left_hand = new THREE.Mesh(hand, material);
+  left_hand.position.set(60, 10, 0);
+  body.add(left_hand);
+
+  foot = new THREE.BoxGeometry(50, 30, 20);
+  right_foot = new THREE.Mesh(foot, material);
+  right_foot.position.set(-40, -75, 0);
+  body.add(right_foot);
+
+  left_foot = new THREE.Mesh(foot, material);
+  left_foot.position.set(40, -75, 0);
+  body.add(left_foot);
+
+  var is_cartwheeling = false;
+  var is_flipping = false;
+  var is_spinning = false;
+
+  function setMovement(c, f, s) {
+    is_cartwheeling = c;
+    is_flipping = f;
+    is_spinning = s;
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    // Rotation is around the axis.
+    if (is_cartwheeling) {
+      body.rotation.z = body.rotation.z + 0.05;
+    }
+    if (is_flipping) {
+      body.rotation.x = body.rotation.x + 0.05;
+    }
+    if (is_spinning) {
+      body.rotation.y = body.rotation.y + 0.05;
+    }
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+//  renderer.render(scene, camera);
+
+</script>

@@ -1,0 +1,193 @@
+<!--
+ ! Excerpted from "3D Game Programming for Kids",
+ ! published by The Pragmatic Bookshelf.
+ ! Copyrights apply to this code. It may not be used to create training material,
+ ! courses, books, articles, and the like. Contact us if you are in doubt.
+ ! We make no guarantees that this code is fit for any purpose.
+ ! Visit http://www.pragmaticprogrammer.com/titles/csjava for more book information.
+-->
+<body>
+</body>
+<script src="../../../resources/scripts/extlibs/three.min.js"></script>
+<script>
+  // This is where stuff in our game will happen:
+  var scene = new THREE.Scene();
+  var shape, material;
+
+  // This is what sees the stuff:
+  var aspect_ratio = window.innerWidth / window.innerHeight;
+  var camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 10000);
+  camera.position.z = 500;
+  scene.add(camera);
+
+  // This will draw what the camera sees onto the screen:
+  var renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  // Sphere
+  shape = new THREE.SphereGeometry(100, 10, 10);
+  material = new THREE.MeshNormalMaterial(THREE.NoColors);
+  var sphere = new THREE.Mesh(shape, material);
+
+  scene.add(sphere);
+  sphere.position.set(-250, 250, -250);
+
+  // Cube
+  shape = new THREE.CubeGeometry(100, 100, 100);
+  material = new THREE.MeshNormalMaterial(THREE.NoColors);
+  var cube = new THREE.Mesh(shape, material);
+
+  scene.add(cube);
+  cube.rotation.set(0.5, 0.5, 0.5);
+  cube.position.set(250, -250, -100);
+
+  // Flat box
+  shape = new THREE.CubeGeometry(300, 20, 200);
+  material = new THREE.MeshNormalMaterial(THREE.NoColors);
+  var rectangle = new THREE.Mesh(shape, material);
+
+  scene.add(rectangle);
+  rectangle.rotation.set(0.5, 0.5, 0);
+  rectangle.position.set(-350, -100, -300);
+
+  // Cylinder
+  shape = new THREE.CylinderGeometry(20, 20, 100);
+  material = new THREE.MeshNormalMaterial(THREE.NoColors);
+  var cylinder = new THREE.Mesh(shape, material);
+
+  scene.add(cylinder);
+  cylinder.rotation.set(0.5, 0, 0);
+  cylinder.position.set(200, 200, -200);
+
+  // Disc 1
+  shape = new THREE.CylinderGeometry(150, 150, 10);
+  material = new THREE.MeshNormalMaterial();
+  var disc1 = new THREE.Mesh(shape, material);
+
+  scene.add(disc1);
+  disc1.rotation.set(0.5, 0.5, 0);
+  disc1.position.set(350, 0, -200);
+
+  // Disc 2
+  shape = new THREE.CylinderGeometry(100, 100, 10, 20);
+  material = new THREE.MeshNormalMaterial();
+  var disc2 = new THREE.Mesh(shape, material);
+
+  scene.add(disc2);
+  disc2.rotation.set(0.5, 0, 0);
+  disc2.position.set(-400, 100, -200);
+
+  // Cone
+  shape = new THREE.CylinderGeometry(1, 100, 100);
+  material = new THREE.MeshNormalMaterial();
+  var cone = new THREE.Mesh(shape, material);
+
+  scene.add(cone);
+  cone.rotation.set(0.5, 0, 0);
+  cone.position.set(-250, -250, -100);
+
+  // Pyramid
+  shape = new THREE.CylinderGeometry(1, 100, 100, 4);
+  material = new THREE.MeshNormalMaterial();
+  var pyramid = new THREE.Mesh(shape, material);
+
+  scene.add(pyramid);
+  pyramid.rotation.set(0.5, 0, 0);
+  pyramid.position.set(0, 200, -100);
+
+  // Plane
+  shape = new THREE.PlaneGeometry(500, 500);
+  material = new THREE.MeshDepthMaterial({wireframe:true});
+  var plane = new THREE.Mesh(shape, material);
+
+  scene.add(plane);
+  plane.rotation.set(1.0, 0, 0);
+
+  // Torus
+  shape = new THREE.TorusGeometry(100, 25, 8, 25);
+  material = new THREE.MeshNormalMaterial();
+  var torus = new THREE.Mesh(shape, material);
+
+  scene.add(torus);
+  torus.rotation.set(1.0, 0, 0);
+  torus.position.set(0, -50, -100);
+
+  // Hexagon
+  shape = new THREE.TorusGeometry(100, 25);
+  material = new THREE.MeshNormalMaterial();
+  var hexagon = new THREE.Mesh(shape, material);
+
+  scene.add(hexagon);
+  hexagon.rotation.set(0.5, 0, 0);
+  hexagon.position.set(0, -300, -150);
+
+  var key;
+  document.addEventListener('keydown', function(event) {
+//    alert(event.keyCode);
+    key = event.keyCode;
+  });
+  document.addEventListener('keyup', function(event) {
+    key = null;
+  });
+
+  var conditional = function() {
+    var if_test = function() { return false; };
+    var that = {};
+
+    that.if = function(fnc) {
+      if (!fnc) {
+        return if_test();
+      }
+      if_test = fnc;
+      return this;
+    };
+    that.then = function(ifFnc, elseFnc) {
+      return function() {
+        if (if_test()) {
+          return ifFnc();
+        }
+        if (elseFnc) {
+          return elseFnc();
+        }
+      };
+    };
+    return that;
+  };
+  // test -> r.if() ?
+
+  // Now, show what the camera sees on the screen:
+  renderer.render(scene, camera);
+
+//  function move() {
+//    var t = clock.getElapsedTime();
+//    sphere.rotation.set(t, 2*t, 0);
+//    pyramid.rotation.set(t, 2*t, 0);
+//    plane.rotation.set(t, 2*t, 0);
+//    disc1.rotation.set(t, 2*t, 0);
+//    disc2.rotation.set(t, 2*t, 0);
+//    cube.rotation.set(t, 2*t, 0);
+//    rectangle.rotation.set(t, 2*t, 0);
+//    rectangle.rotation.set(t, 2*t, 0);
+//    cylinder.rotation.set(t, 2*t, 0);
+//    cone.rotation.set(t, 2*t, 0);
+//    torus.rotation.set(t, 2*t, 0);
+//    hexagon.rotation.set(t, 2*t, 0);
+//
+//    renderer.render(scene, camera);
+//  }
+//  function dontmove() {
+//    console.log('not moving');
+//  }
+//
+//  var clock = new THREE.Clock();
+//  var r = conditional().if(function(){return key == 32;}).then(move, dontmove);
+//
+//  function animate() {
+//    requestAnimationFrame(animate);
+//
+//    r();
+//  }
+//  animate();
+
+</script>
